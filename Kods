@@ -1,0 +1,117 @@
+// In App.js in a new project
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import {useState} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native'; //Navigācijas konteineris
+import { createStackNavigator } from '@react-navigation/stack'; // Izveido navigācijas steck
+
+const Stack = createStackNavigator();
+const data = new Array(10).fill(null).map((v, i) => ({ key: i.toString(), value: `Item ${i}` }));
+const people = [
+    { name: 'John Doe 1', id: '1' },
+    { name: 'John Doe 2', id: '2' },
+    { name: 'John Doe 3', id: '3' },
+    { name: 'John Doe 4', id: '4' },
+    { name: 'John Doe 5', id: '5' },
+    { name: 'John Doe 6', id: '6' },
+    { name: 'John Doe 7', id: '7' },
+];
+
+function HomeScreen({navigation}) {
+  const [counter, setCounter] = useState(0);
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ListView')}
+          style={styles.button}>
+          <Text style={styles.buttontext}>See List View</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {setCounter(counter+1);}}
+          style={styles.button}>
+          <Text style={styles.buttontext}>Counter increase</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {setCounter(counter-1);}}
+          style={styles.button}>
+          <Text style={styles.buttontext}>Counter decrease</Text>
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.hometext}> 
+            Count: {counter}
+          </Text>
+        </View>
+      </View>
+    )
+}
+
+function ListView({navigation}) {
+  return (
+    <View>
+      <FlatList
+        data={people}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>{item.name}</Text>
+        )}
+      />
+    </View>
+  );
+}
+
+function App() {
+  
+  return (
+    <NavigationContainer initialRouteName="Home">
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} options={{title: 'Home', headerStyle: {
+          backgroundColor: '#3d0575',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          }}
+            />
+        <Stack.Screen name="ListView" component={ListView} options={{title: 'List View', headerStyle: {
+            backgroundColor: '#3d0575',
+          },
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          }}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+
+export default App;
+
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#aca0fa',
+    borderRadius: 15,
+    paddingVertical: 14,
+    marginVertical: 8,
+    marginHorizontal: 60,
+    alignItems: 'center',
+
+  },
+  hometext:{
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'blue',
+  },
+  item: 
+  {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  buttontext: 
+  {
+    fontSize: 16,
+  }
+})
